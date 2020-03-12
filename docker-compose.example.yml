@@ -1,0 +1,29 @@
+version: "3.7"
+
+services:
+  registry:
+    image: registry:2
+    container_name: registry
+    restart: always
+    environment:
+      - REGISTRY_HTTP_ADDR=0.0.0.0:5000
+    volumes:
+      - type: volume
+        source: registry
+        target: /var/lib/registry
+
+  registry-proxy:
+    image: docker-registry-proxy:latest
+    container_name: registry-proxy
+    restart: always
+    ports:
+      - "80:80"
+    links:
+      - registry:registry
+    volumes:
+      - type: volume
+        source: registry-proxy-auth
+        target: /etc/nginx/conf.d
+
+volumes:
+  - registry-proxy-auth:
