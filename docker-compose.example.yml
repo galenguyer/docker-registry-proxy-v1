@@ -26,4 +26,5 @@ services:
         target: /etc/nginx/conf.d
 
 volumes:
-  - registry-proxy-auth:
+  registry:
+  registry-proxy-auth:
