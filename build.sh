@@ -7,14 +7,8 @@ set -o errexit
 # exit if required variables aren't set
 set -o nounset
 
-# if no arguments are passed, display usage info and exit
-if [ "$#" -ne 1 ]; then
-        echo -e "\nUsage: build.sh <version>\n"
-        exit 1
-fi
-
-# first and only argument should be nginx version to build
-version="$1"
+# set version of nginx to build
+version="1.17.9"
 
 # set current directory as base directory
 basedir="$(pwd)"
@@ -26,13 +20,7 @@ docker run -it --rm -e "NGINX=$version" -v "$basedir"/artifacts:/build alpine:la
 cp "$basedir"/artifacts/nginx-"$version" "$basedir"/image/nginx
 
 # create docker run image
-docker build --build-arg version="$version" -t docker.seedno.de/seednode/nginx:"$version" "$basedir"/image/.
+docker build -t docker-registry-proxy:latest "$basedir"/image/.
 
 # remove nginx binary from image build directory
 rm "$basedir"/image/nginx
-
-# log in to docker registry
-pass show docker-credential-helpers/docker-pass-initialized-check && docker login docker.seedno.de
-
-# push the image to registry
-docker push docker.seedno.de/seednode/nginx:"$version"
