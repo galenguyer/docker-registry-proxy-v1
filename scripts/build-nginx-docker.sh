@@ -60,6 +60,7 @@ git clone https://github.com/aperezdc/ngx-fancyindex.git "$BUILDROOT"/ngx-fancyi
 	--with-file-aio \
 	--with-pcre \
 	--with-pcre-jit \
+        --with-http_auth_request_module \
 	--without-http_gzip_module \
 	--without-select_module \
 	--without-poll_module \
