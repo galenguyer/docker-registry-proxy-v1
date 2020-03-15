@@ -9,7 +9,7 @@ set -o nounset
 
 # set version of nginx to build
 version="1.17.9"
-
+build_version="$version".2
 # set current directory as base directory
 basedir="$(pwd)"
 
@@ -20,7 +20,16 @@ docker run -it --rm -e "NGINX=$version" -v "$basedir"/artifacts:/build alpine:la
 cp "$basedir"/artifacts/nginx-"$version" "$basedir"/image/nginx
 
 # create docker run image
-docker build -t docker-registry-proxy:latest "$basedir"/image/.
+docker build \
+	-t docker-registry-proxy:"$build_version" \
+	-t docker-registry-proxy:latest \
+	-t docker.galenguyer.com/chef/docker-registry-proxy:"$build_version" \
+	-t docker.galenguyer.com/chef/docker-registry-proxy:latest \
+	"$basedir"/image/.
 
 # remove nginx binary from image build directory
 rm "$basedir"/image/nginx
+
+# push the image to registry
+docker push docker.galenguyer.com/chef/docker-registry-proxy:"$build_version"
+docker push docker.galenguyer.com/chef/docker-registry-proxy:latest
