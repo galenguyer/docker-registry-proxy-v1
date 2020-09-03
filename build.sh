@@ -8,28 +8,14 @@ set -o errexit
 set -o nounset
 
 # set version of nginx to build
-version="1.17.9"
-build_version="$version".2
-# set current directory as base directory
-basedir="$(pwd)"
-
-# build docker and copy build artifacts to volume mount
-docker run -it --rm -e "NGINX=$version" -v "$basedir"/artifacts:/build alpine:latest /bin/ash -c "`cat ./scripts/build-nginx-docker.sh`"
-
-# copy nginx binary to image build directory
-cp "$basedir"/artifacts/nginx-"$version" "$basedir"/image/nginx
+version="1.19.2"
+build_version="$version".0
 
 # create docker run image
 docker build \
-	-t docker-registry-proxy:"$build_version" \
 	-t docker-registry-proxy:latest \
-	-t docker.galenguyer.com/chef/docker-registry-proxy:"$build_version" \
-	-t docker.galenguyer.com/chef/docker-registry-proxy:latest \
-	"$basedir"/image/.
-
-# remove nginx binary from image build directory
-rm "$basedir"/image/nginx
+	-t docker-registry-proxy:"$build_version" .
 
 # push the image to registry
-docker push docker.galenguyer.com/chef/docker-registry-proxy:"$build_version"
-docker push docker.galenguyer.com/chef/docker-registry-proxy:latest
+#docker push docker.galenguyer.com/chef/docker-registry-proxy:"$build_version"
+#docker push docker.galenguyer.com/chef/docker-registry-proxy:latest
