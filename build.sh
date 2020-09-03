@@ -13,9 +13,11 @@ build_version="$version".0
 
 # create docker run image
 docker build \
+	-t docker.galenguyer.com/chef/docker-registry-proxy:latest \
+	-t docker.galenguyer.com/chef/docker-registry-proxy:"$build_version" \
 	-t docker-registry-proxy:latest \
 	-t docker-registry-proxy:"$build_version" .
 
 # push the image to registry
-#docker push docker.galenguyer.com/chef/docker-registry-proxy:"$build_version"
-#docker push docker.galenguyer.com/chef/docker-registry-proxy:latest
+docker push docker.galenguyer.com/chef/docker-registry-proxy:"$build_version"
+docker push docker.galenguyer.com/chef/docker-registry-proxy:latest
