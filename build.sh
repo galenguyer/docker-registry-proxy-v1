@@ -8,7 +8,7 @@ set -o errexit
 set -o nounset
 
 # create docker run image
-docker build -t docker.galenguyer.com/chef/docker-registry-proxy:latest .
+docker build -t docker-registry-proxy:latest -t docker.galenguyer.com/chef/docker-registry-proxy:latest .
 
 # push the image to registry
 docker push docker.galenguyer.com/chef/docker-registry-proxy:latest
