@@ -54,11 +54,11 @@ FROM alpine:latest
 LABEL maintainer="Galen Guyer <galen@galenguyer.com>"
 
 # setup nginx folders and files
-RUN adduser www-data -D -H
-RUN mkdir -p /tmp/nginx/{client,proxy} && chown -R www-data:www-data /tmp/nginx/
-RUN mkdir -p /var/log/nginx && chown -R www-data:www-data /var/log/nginx
-RUN touch /run/nginx.pid && chown www-data:www-data /run/nginx.pid
-RUN mkdir -p /etc/nginx 
+RUN adduser www-data -D -H \
+	&&  mkdir -p /tmp/nginx/{client,proxy} && chown -R www-data:www-data /tmp/nginx/ \
+	&& mkdir -p /var/log/nginx && chown -R www-data:www-data /var/log/nginx \
+	&& touch /run/nginx.pid && chown www-data:www-data /run/nginx.pid \
+	&& mkdir -p /etc/nginx
 
 # add nginx binaries and confs
 COPY --from=nginx /usr/sbin/nginx /usr/sbin/nginx
